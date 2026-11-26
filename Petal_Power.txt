@@ -1,0 +1,35 @@
+import codecademylib3
+
+#importing pandas to manipulate and analyzse data
+import pandas as pd
+
+#transforming our csv file into a DataFrame to work with it
+inventory = pd.read_csv("inventory.csv")
+
+#showing the 1st 10 rows of the data
+staten_island = inventory.head(10)
+print(staten_island)
+
+#keeping the column product_description of our 10 rows variable into a new one
+product_request = staten_island.product_description
+
+#choosing a specific location and a specfic seed from our main dataset and saving it in a new one 
+seed_request = inventory[(inventory["location"] == "Brooklyn") & (inventory["product_type"] == "seeds")]
+
+# print(seed_request)
+#creating a new column based on whether the quantity is > 0 or less and returning true or false
+inventory["in_stock"] = inventory["quantity"].apply(lambda row: "True" if row > 0 else "False")
+
+# print(inventory)
+#creating a total value column by multiplying each row of price with weach quantity
+inventory["total_value"] = inventory.apply(lambda row: row.price * row.quantity, axis=1)
+
+# print(inventory)
+#creating a simple funtion that combines each row of product type with its description
+combine_lambda = lambda row: '{} - {}'.format(row.product_type, row.product_description)
+
+#using our simple function and applying it on our main dataset to create a new column
+inventory["full_description"] = inventory.apply(combine_lambda, axis=1)
+
+# print(inventory)
+In(-1)
